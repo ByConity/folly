@@ -28,12 +28,10 @@
 #include <cstdlib>
 #include <string>
 #include <fmt/chrono.h>
-#include <fmt/format.h>
 
 #include <folly/Demangle.h>
 #include <folly/ScopeGuard.h>
 #include <folly/experimental/symbolizer/Symbolizer.h>
-#include <folly/lang/SafeAssert.h>
 #include <folly/portability/Config.h>
 #include <folly/portability/FmtCompile.h>
 // Before registrationComplete() we cannot assume that glog has been
@@ -81,40 +79,42 @@ std::string TypeDescriptor::name() const {
 
 [[noreturn]] void singletonWarnDoubleRegistrationAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      fmt::format(
-          fmt::runtime( //
-              "Double registration of singletons of the same "
-              "underlying type; check for multiple definitions "
-              "of type folly::Singleton<{}>"),
-          type.name())
-          .c_str());
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Double registration of singletons of the same "
+      "underlying type; check for multiple definitions "
+      "of type folly::Singleton<%s>",
+      type.name().c_str());
+  folly::assume_unreachable();
 }
 
 [[noreturn]] void singletonWarnLeakyDoubleRegistrationAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      fmt::format(
-          fmt::runtime( //
-              "Double registration of singletons of the same "
-              "underlying type; check for multiple definitions "
-              "of type folly::LeakySingleton<{}>"),
-          type.name())
-          .c_str());
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Double registration of singletons of the same "
+      "underlying type; check for multiple definitions "
+      "of type folly::LeakySingleton<%s>",
+      type.name().c_str());
+  folly::assume_unreachable();
 }
 
 [[noreturn]] void singletonWarnLeakyInstantiatingNotRegisteredAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      "Creating instance for unregistered singleton: ",
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Creating instance for unregistered singleton: %s",
       type.name().c_str());
+  folly::assume_unreachable();
 }
 
 [[noreturn]] void singletonWarnRegisterMockEarlyAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      "Registering mock before singleton was registered: ",
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Registering mock before singleton was registered: %s",
       type.name().c_str());
+  folly::assume_unreachable();
 }
 
 void singletonWarnDestroyInstanceLeak(
@@ -131,28 +131,30 @@ void singletonWarnDestroyInstanceLeak(
 
 [[noreturn]] void singletonWarnCreateCircularDependencyAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL("circular singleton dependency: ", type.name().c_str());
+  LOG(FATAL) << "circular singleton dependency: " << type.name();
+  folly::assume_unreachable();
 }
 
 [[noreturn]] void singletonWarnCreateUnregisteredAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      "Creating instance for unregistered singleton: ",
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Creating instance for unregistered singleton: %s",
       type.name().c_str());
+  folly::assume_unreachable();
 }
 
 [[noreturn]] void singletonWarnCreateBeforeRegistrationCompleteAndAbort(
     const TypeDescriptor& type) {
-  FOLLY_SAFE_FATAL( // May happen before registrationComplete().
-      fmt::format(
-          fmt::runtime( //
-              "Singleton {} requested before "
-              "registrationComplete() call.\n"
-              "This usually means that either main() never called "
-              "folly::init, or singleton was requested before main() "
-              "(which is not allowed)"),
-          type.name())
-          .c_str());
+  RAW_LOG( // May happen before registrationComplete().
+      FATAL,
+      "Singleton %s requested before "
+      "registrationComplete() call.\n"
+      "This usually means that either main() never called "
+      "folly::init, or singleton was requested before main() "
+      "(which is not allowed)",
+      type.name().c_str());
+  folly::assume_unreachable();
 }
 
 void singletonPrintDestructionStackTrace(const TypeDescriptor& type) {
