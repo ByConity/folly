@@ -106,7 +106,7 @@ TEST_F(GeneratorTest, DestroyedBeforeCompletion_DestructsObjectsOnStack) {
   bool destructed = false;
   bool completed = false;
   auto f = [&]() -> Generator<std::uint32_t> {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       destructed = true;
     };
 

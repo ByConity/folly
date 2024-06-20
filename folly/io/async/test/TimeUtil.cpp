@@ -121,7 +121,7 @@ static int64_t determineSchedstatUnits() {
                << configPath;
     return -1;
   }
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     fclose(f);
   };
 

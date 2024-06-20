@@ -643,7 +643,7 @@ TEST(IoUringBackend, OpenAt) {
   int dfd = ::open(dirPath.string().c_str(), O_DIRECTORY | O_RDONLY, 0666);
   CHECK_GE(dfd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(dfd);
     ::unlink(filePath.string().c_str());
   };
@@ -675,7 +675,7 @@ TEST(IoUringBackend, OpenAtAbsolutePath) {
   auto path = folly::fs::unique_path();
   auto filePath = dirPath / path;
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::unlink(filePath.string().c_str());
   };
 
@@ -711,7 +711,7 @@ TEST(IoUringBackend, Statx) {
   int fd = ::open(filePath.string().c_str(), O_CREAT | O_WRONLY | O_TRUNC);
   CHECK_GE(fd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(dfd);
     ::close(fd);
     ::unlink(filePath.string().c_str());
@@ -743,7 +743,7 @@ TEST(IoUringBackend, StatxAbsolute) {
   int fd = ::open(filePath.string().c_str(), O_CREAT | O_WRONLY | O_TRUNC);
   CHECK_GE(fd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
     ::unlink(filePath.string().c_str());
   };
@@ -779,7 +779,7 @@ TEST(IoUringBackend, OpenAt2) {
   int dfd = ::open(dirPath.string().c_str(), O_DIRECTORY | O_RDONLY, 0666);
   CHECK_GE(dfd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(dfd);
     ::unlink(filePath.string().c_str());
   };
@@ -811,7 +811,7 @@ TEST(IoUringBackend, Close) {
   int fd = ::open(path.string().c_str(), O_RDWR | O_CREAT | O_EXCL, 0666);
   CHECK_GE(fd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     if (fd >= 0) {
       ::close(fd);
     }
@@ -844,7 +844,7 @@ TEST(IoUringBackend, Fallocate) {
   int fd = ::open(path.string().c_str(), O_RDWR | O_CREAT | O_EXCL, 0666);
   CHECK_GE(fd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     if (fd >= 0) {
       ::close(fd);
       ::unlink(path.string().c_str());
@@ -935,7 +935,7 @@ TEST(IoUringBackend, RegisteredFds) {
   int eventFd = ::eventfd(0, EFD_CLOEXEC | EFD_SEMAPHORE | EFD_NONBLOCK);
   CHECK_GT(eventFd, 0);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(eventFd);
   };
 
@@ -989,7 +989,7 @@ TEST(IoUringBackend, FileReadWrite) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDWR);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -1057,7 +1057,7 @@ TEST(IoUringBackend, FileReadvWritev) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDWR);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -1153,7 +1153,7 @@ TEST(IoUringBackend, FileReadMany) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDWR);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -1215,7 +1215,7 @@ TEST(IoUringBackend, FileWriteMany) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDWR);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -1416,7 +1416,7 @@ TEST(IoUringBackend, ProvidedBuffers) {
 
   int fds[2];
   ASSERT_EQ(0, ::pipe(fds));
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fds[0]);
     ::close(fds[1]);
   };

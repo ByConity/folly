@@ -256,7 +256,7 @@ int writeFileAtomicNoThrowImpl(
     return errno;
   }
   bool success = false;
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     if (tmpFD != -1) {
       close(tmpFD);
     }

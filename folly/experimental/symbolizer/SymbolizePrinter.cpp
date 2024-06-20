@@ -67,7 +67,7 @@ void SymbolizePrinter::print(const SymbolizedFrame& frame) {
     return;
   }
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     color(Color::Default);
   };
 

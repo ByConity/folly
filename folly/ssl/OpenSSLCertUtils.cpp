@@ -110,7 +110,7 @@ std::vector<std::string> OpenSSLCertUtils::getSubjectAltNames(X509& x509) {
   if (!names) {
     return {};
   }
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     sk_GENERAL_NAME_pop_free(names, GENERAL_NAME_free);
   };
 

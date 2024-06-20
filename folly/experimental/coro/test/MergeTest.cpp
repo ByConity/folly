@@ -74,7 +74,7 @@ TEST_F(MergeTest, TruncateStream) {
           co_invoke([&]() -> AsyncGenerator<AsyncGenerator<int>> {
             auto makeGenerator = [&]() -> AsyncGenerator<int> {
               ++started;
-              SCOPE_EXIT {
+              FOLLY_SCOPE_EXIT {
                 ++completed;
               };
               co_yield 1;
@@ -114,7 +114,7 @@ TEST_F(MergeTest, TruncateStreamMultiThreaded) {
           folly::getGlobalCPUExecutor(),
           co_invoke([&]() -> AsyncGenerator<AsyncGenerator<int>> {
             auto makeGenerator = [&]() -> AsyncGenerator<int> {
-              SCOPE_EXIT {
+              FOLLY_SCOPE_EXIT {
                 if (++completed == 3) {
                   allCompleted.post();
                 }
@@ -284,7 +284,7 @@ TEST_F(MergeTest, SourcesAreDestroyedBeforeEof) {
   auto sourceGenerator =
       [&](bool shouldThrow) -> folly::coro::AsyncGenerator<int> {
     ++runningSourceGenerators;
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       --runningSourceGenerators;
     };
     co_await folly::coro::co_reschedule_on_current_executor;
@@ -299,7 +299,7 @@ TEST_F(MergeTest, SourcesAreDestroyedBeforeEof) {
       -> folly::coro::AsyncGenerator<folly::coro::AsyncGenerator<int>> {
     CHECK(runningListGenerators == 0);
     ++runningListGenerators;
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       /* sleep override */
       std::this_thread::sleep_for(std::chrono::milliseconds(10));
       --runningListGenerators;

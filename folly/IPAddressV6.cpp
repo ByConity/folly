@@ -107,7 +107,7 @@ Expected<IPAddressV6, IPAddressFormatError> IPAddressV6::tryFromString(
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_flags = AI_NUMERICHOST;
   if (::getaddrinfo(ipBuffer.data(), nullptr, &hints, &result) == 0) {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       ::freeaddrinfo(result);
     };
     const struct sockaddr_in6* sa =

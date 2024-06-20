@@ -188,7 +188,7 @@ class TLRefCount {
       // fetch_add on platforms with native support.
       auto count = count_.load(std::memory_order_relaxed) + delta;
       inUpdate_.store(true, std::memory_order_relaxed);
-      SCOPE_EXIT {
+      FOLLY_SCOPE_EXIT {
         inUpdate_.store(false, std::memory_order_release);
       };
       count_.store(count, std::memory_order_release);

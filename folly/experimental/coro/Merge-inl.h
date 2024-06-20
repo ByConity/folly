@@ -323,7 +323,7 @@ AsyncGenerator<Reference, Value> merge(
 
   auto state = std::make_shared<SharedState>(executor);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     state->cancelSource.requestCancellation();
     // Make sure we resume the worker thread so that it has a chance to notice
     // that cancellation has been requested.

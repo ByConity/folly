@@ -1249,7 +1249,7 @@ TEST(AsyncSSLSocketTest, SSLParseClientHelloOnePacket) {
   cursor.write<uint32_t>(0);
 
   SSL* ssl = ctx->createSSL();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     SSL_free(ssl);
   };
   AsyncSSLSocket::UniquePtr sock(
@@ -1291,7 +1291,7 @@ TEST(AsyncSSLSocketTest, SSLParseClientHelloTwoPackets) {
   cursor.write<uint32_t>(0);
 
   SSL* ssl = ctx->createSSL();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     SSL_free(ssl);
   };
   AsyncSSLSocket::UniquePtr sock(
@@ -1351,7 +1351,7 @@ TEST(AsyncSSLSocketTest, SSLParseClientHelloMultiplePackets) {
   cursor.write<uint32_t>(0);
 
   SSL* ssl = ctx->createSSL();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     SSL_free(ssl);
   };
   AsyncSSLSocket::UniquePtr sock(

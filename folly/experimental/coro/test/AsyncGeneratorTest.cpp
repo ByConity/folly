@@ -66,7 +66,7 @@ TEST_F(AsyncGeneratorTest, PartiallyConsumingSequenceDestroysObjectsInScope) {
   bool started = false;
   bool destroyed = false;
   auto makeGenerator = [&]() -> folly::coro::AsyncGenerator<int> {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       destroyed = true;
     };
     started = true;

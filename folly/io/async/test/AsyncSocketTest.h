@@ -533,7 +533,7 @@ class TestServer {
           errno);
     }
 
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       freeaddrinfo(res);
     };
 

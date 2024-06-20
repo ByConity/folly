@@ -40,7 +40,7 @@ FOLLY_NOINLINE invoke_result_t<F> executeWithNewRoot(
   auto* oldRoot = exchangeCurrentAsyncStackRoot(&newRoot);
   activateAsyncStackFrame(newRoot, frame);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     deactivateAsyncStackFrame(frame);
     CHECK_EQ(&newRoot, exchangeCurrentAsyncStackRoot(oldRoot));
   };

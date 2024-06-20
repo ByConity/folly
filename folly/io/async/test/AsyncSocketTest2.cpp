@@ -4819,7 +4819,7 @@ TEST_F(AsyncSocketByteEventTest, FailUnixSocket) {
   EXPECT_EQ(netops::socketpair(AF_UNIX, SOCK_STREAM, 0, fd), 0);
   ASSERT_NE(fd[0], NetworkSocket());
   ASSERT_NE(fd[1], NetworkSocket());
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     netops::close(fd[1]);
   };
 
@@ -9393,7 +9393,7 @@ TEST(AsyncSocketTest, SendMessageAncillaryData) {
   // "Server" socket
   auto sfd = fds[1];
   ASSERT_NE(sfd, NetworkSocket());
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     netops::close(sfd);
   };
 
@@ -9472,7 +9472,7 @@ TEST(AsyncSocketTest, SendMessageAncillaryData) {
   int fd = 0;
   memcpy(&fd, CMSG_DATA(&r_u.cmh), sizeof(int));
   ASSERT_NE(fd, 0);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     close(fd);
   };
 
@@ -9622,7 +9622,7 @@ TEST(AsyncSocketTest, UnixDomainSocketErrMessageCB) {
   EXPECT_EQ(netops::socketpair(AF_UNIX, SOCK_STREAM, 0, fd), 0);
   ASSERT_NE(fd[0], NetworkSocket());
   ASSERT_NE(fd[1], NetworkSocket());
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     netops::close(fd[1]);
   };
 

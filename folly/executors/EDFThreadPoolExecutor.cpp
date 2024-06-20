@@ -434,7 +434,7 @@ std::shared_ptr<EDFThreadPoolExecutor::Task> EDFThreadPoolExecutor::take() {
   // No tasks on the horizon, so go sleep
   numIdleThreads_.fetch_add(1, std::memory_order_seq_cst);
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     numIdleThreads_.fetch_sub(1, std::memory_order_seq_cst);
   };
 

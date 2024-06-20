@@ -336,7 +336,7 @@ TEST(RetryingTest, largeRetries) {
   newMemLimit.rlim_max = oldMemLimit.rlim_max;
   auto const lowered = // sanitizers reserve outside of the rlimit
       !folly::kIsSanitize && setrlimit(RLIMIT_AS, &newMemLimit) != 0;
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     PCHECK(!lowered || setrlimit(RLIMIT_AS, &oldMemLimit) == 0);
   };
 #endif

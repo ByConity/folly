@@ -247,7 +247,7 @@ class FOLLY_NODISCARD AsyncGenerator {
   CleanupSemiAwaitable cleanup() && {
     static_assert(RequiresCleanup);
     if (coro_) {
-      SCOPE_EXIT {
+      FOLLY_SCOPE_EXIT {
         std::exchange(coro_, {}).destroy();
       };
       return CleanupSemiAwaitable{coro_.promise().scopeExit_};

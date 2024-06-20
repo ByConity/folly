@@ -1276,7 +1276,7 @@ bool LZMA2StreamCodec::doCompressStream(
   cstream_->avail_in = input.size();
   cstream_->next_out = output.data();
   cstream_->avail_out = output.size();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     input.uncheckedAdvance(input.size() - cstream_->avail_in);
     output.uncheckedAdvance(output.size() - cstream_->avail_out);
   };
@@ -1361,7 +1361,7 @@ bool LZMA2StreamCodec::doUncompressStream(
   dstream_->avail_in = input.size();
   dstream_->next_out = output.data();
   dstream_->avail_out = output.size();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     input.advance(input.size() - dstream_->avail_in);
     output.advance(output.size() - dstream_->avail_out);
   };
@@ -1606,7 +1606,7 @@ bool Bzip2StreamCodec::doCompressStream(
   cstream_->avail_in = input.size();
   cstream_->next_out = reinterpret_cast<char*>(output.data());
   cstream_->avail_out = output.size();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     input.uncheckedAdvance(input.size() - cstream_->avail_in);
     output.uncheckedAdvance(output.size() - cstream_->avail_out);
   };
@@ -1654,7 +1654,7 @@ bool Bzip2StreamCodec::doUncompressStream(
   dstream_->avail_in = input.size();
   dstream_->next_out = reinterpret_cast<char*>(output.data());
   dstream_->avail_out = output.size();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     input.uncheckedAdvance(input.size() - dstream_->avail_in);
     output.uncheckedAdvance(output.size() - dstream_->avail_out);
   };

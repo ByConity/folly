@@ -103,7 +103,7 @@ struct MyObjectDirectory {
  */
 TEST(AHMIntStressTest, Test) {
   auto const objs = new MyObjectDirectory();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     delete objs;
   };
 

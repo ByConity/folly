@@ -242,7 +242,7 @@ namespace detail {
  * If the parameter is false, then the function is executed if no new uncaught
  * exceptions are present at the end of the scope.
  *
- * Used to implement SCOPE_FAIL and SCOPE_SUCCESS below.
+ * Used to implement FOLLY_SCOPE_FAIL and FOLLY_SCOPE_SUCCESS below.
  */
 template <typename FunctionType, bool ExecuteOnException>
 class ScopeGuardForNewException {
@@ -269,7 +269,7 @@ class ScopeGuardForNewException {
 };
 
 /**
- * Internal use for the macro SCOPE_FAIL below
+ * Internal use for the macro FOLLY_SCOPE_FAIL below
  */
 enum class ScopeGuardOnFail {};
 
@@ -282,7 +282,7 @@ operator+(detail::ScopeGuardOnFail, FunctionType&& fn) {
 }
 
 /**
- * Internal use for the macro SCOPE_SUCCESS below
+ * Internal use for the macro FOLLY_SCOPE_SUCCESS below
  */
 enum class ScopeGuardOnSuccess {};
 
@@ -295,7 +295,7 @@ operator+(ScopeGuardOnSuccess, FunctionType&& fn) {
 }
 
 /**
- * Internal use for the macro SCOPE_EXIT below
+ * Internal use for the macro FOLLY_SCOPE_EXIT below
  */
 enum class ScopeGuardOnExit {};
 
@@ -309,7 +309,7 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 
 } // namespace folly
 
-//  SCOPE_EXIT
+//  FOLLY_SCOPE_EXIT
 //
 //  Example:
 //
@@ -317,7 +317,7 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 //
 //        some_resource_t resource;
 //        some_resource_init(resource);
-//        SCOPE_EXIT { some_resource_fini(resource); };
+//        FOLLY_SCOPE_EXIT { some_resource_fini(resource); };
 //
 //        if (!cond)
 //          throw 0; // the cleanup happens at end of the scope
@@ -328,12 +328,12 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 //
 //      } /* close scope */
 //
-//  The code in the braces passed to SCOPE_EXIT executes at the end of the
+//  The code in the braces passed to FOLLY_SCOPE_EXIT executes at the end of the
 //  containing scope as if the code is the content of the destructor of an
-//  object instantiated at the point of the SCOPE_EXIT, where the destructor
+//  object instantiated at the point of the FOLLY_SCOPE_EXIT, where the destructor
 //  reference-captures all local variables it uses.
 //
-//  The cleanup code - the code in the braces passed to SCOPE_EXIT - always
+//  The cleanup code - the code in the braces passed to FOLLY_SCOPE_EXIT - always
 //  executes at the end of the scope, regardless of whether the scope exits
 //  normally or erroneously as if via the throw statement.
 //
@@ -349,18 +349,18 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 /**
  * Capture code that shall be run when the current scope exits.
  *
- * The code within SCOPE_EXIT's braces shall execute as if the code was in the
- * destructor of an object instantiated at the point of SCOPE_EXIT.
+ * The code within FOLLY_SCOPE_EXIT's braces shall execute as if the code was in the
+ * destructor of an object instantiated at the point of FOLLY_SCOPE_EXIT.
  *
- * Variables used within SCOPE_EXIT are captured by reference.
+ * Variables used within FOLLY_SCOPE_EXIT are captured by reference.
  *
- * @def SCOPE_EXIT
+ * @def FOLLY_SCOPE_EXIT
  */
-#define SCOPE_EXIT                               \
-  auto FB_ANONYMOUS_VARIABLE(SCOPE_EXIT_STATE) = \
+#define FOLLY_SCOPE_EXIT                               \
+  auto FB_ANONYMOUS_VARIABLE(FOLLY_SCOPE_EXIT_STATE) = \
       ::folly::detail::ScopeGuardOnExit() + [&]() noexcept
 
-//  SCOPE_FAIL
+//  FOLLY_SCOPE_FAIL
 //
 //  May be useful in situations where the caller requests a resource where
 //  initializations of the resource is multi-step and may fail.
@@ -369,7 +369,7 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 //
 //      some_resource_t resource;
 //      some_resource_init(resource);
-//      SCOPE_FAIL { some_resource_fini(resource); };
+//      FOLLY_SCOPE_FAIL { some_resource_fini(resource); };
 //
 //      if (do_throw)
 //        throw 0; // the cleanup happens at the end of the scope
@@ -381,24 +381,24 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 /**
  * Capture code to run if the scope exits with an exception.
  *
- * Like SCOPE_EXIT, but only executes the code if the scope exited due to an
+ * Like FOLLY_SCOPE_EXIT, but only executes the code if the scope exited due to an
  * exception.
  *
- * @def SCOPE_FAIL
+ * @def FOLLY_SCOPE_FAIL
  */
-#define SCOPE_FAIL                               \
-  auto FB_ANONYMOUS_VARIABLE(SCOPE_FAIL_STATE) = \
+#define FOLLY_SCOPE_FAIL                               \
+  auto FB_ANONYMOUS_VARIABLE(FOLLY_SCOPE_FAIL_STATE) = \
       ::folly::detail::ScopeGuardOnFail() + [&]() noexcept
 
-//  SCOPE_SUCCESS
+//  FOLLY_SCOPE_SUCCESS
 //
-//  In a sense, the opposite of SCOPE_FAIL.
+//  In a sense, the opposite of FOLLY_SCOPE_FAIL.
 //
 //  Example:
 //
 //      folly::stop_watch<> watch;
-//      SCOPE_FAIL { log_failure(watch.elapsed(); };
-//      SCOPE_SUCCESS { log_success(watch.elapsed(); };
+//      FOLLY_SCOPE_FAIL { log_failure(watch.elapsed(); };
+//      FOLLY_SCOPE_SUCCESS { log_success(watch.elapsed(); };
 //
 //      if (do_throw)
 //        throw 0; // the cleanup does not happen; log failure
@@ -410,11 +410,11 @@ ScopeGuardImpl<typename std::decay<FunctionType>::type, true> operator+(
 /**
  * Capture code to run if the scope exits without an exception.
  *
- * Like SCOPE_EXIT, but does not execute the code if the scope exited due to an
+ * Like FOLLY_SCOPE_EXIT, but does not execute the code if the scope exited due to an
  * exception.
  *
- * @def SCOPE_SUCCESS
+ * @def FOLLY_SCOPE_SUCCESS
  */
-#define SCOPE_SUCCESS                               \
-  auto FB_ANONYMOUS_VARIABLE(SCOPE_SUCCESS_STATE) = \
+#define FOLLY_SCOPE_SUCCESS                               \
+  auto FB_ANONYMOUS_VARIABLE(FOLLY_SCOPE_SUCCESS_STATE) = \
       ::folly::detail::ScopeGuardOnSuccess() + [&]()

@@ -271,12 +271,12 @@ struct AtomicUnorderedInsertMap {
     // else in this function can throw an exception. In the event of an
     // exception, deallocate as if the KV was beaten in a concurrent addition.
     const auto idx = allocateNear(slot);
-    SCOPE_FAIL {
+    FOLLY_SCOPE_FAIL {
       slots_[idx].stateUpdate(CONSTRUCTING, EMPTY);
     };
     Key* addr = &slots_[idx].keyValue().first;
     new (addr) Key(key);
-    SCOPE_FAIL {
+    FOLLY_SCOPE_FAIL {
       addr->~Key();
     };
     func(static_cast<void*>(&slots_[idx].keyValue().second));

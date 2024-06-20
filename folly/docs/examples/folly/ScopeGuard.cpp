@@ -29,7 +29,7 @@ TEST(scopeGuard, demo) {
 TEST(scopeExit, demo) {
   int y = 0;
   {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       y = 1234;
     };
     EXPECT_EQ(y, 0);

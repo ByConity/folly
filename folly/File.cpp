@@ -76,7 +76,7 @@ File::~File() {
   // make a temp file with tmpfile(), dup the fd, then return it in a File.
   FILE* tmpFile = tmpfile();
   checkFopenError(tmpFile, "tmpfile() failed");
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     fclose(tmpFile);
   };
 

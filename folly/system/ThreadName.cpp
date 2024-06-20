@@ -183,7 +183,7 @@ bool setThreadNameWindowsViaDescription(DWORD id, StringPiece name) noexcept {
     return false;
   }
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     if (id != GetCurrentThreadId()) {
       CloseHandle(thread);
     }

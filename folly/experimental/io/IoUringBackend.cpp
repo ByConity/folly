@@ -953,7 +953,7 @@ void IoUringBackend::processPollIo(
   if (ev) {
     if (flags & IORING_CQE_F_MORE) {
       ioSqe->useCount_++;
-      SCOPE_EXIT {
+      FOLLY_SCOPE_EXIT {
         ioSqe->useCount_--;
       };
       if (ioSqe->cbData_.processCb(this, res, flags)) {
@@ -1428,7 +1428,7 @@ size_t IoUringBackend::getActiveEvents(WaitForEventsMode waitForEvents) {
   struct io_uring_cqe* cqe;
 
   setGetActiveEvents();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     doneGetActiveEvents();
   };
 
@@ -1934,7 +1934,7 @@ static bool doKernelSupportsSendZC() {
         << "doKernelSupportsSendZC: Unexpectedly io_uring_queue_init failed";
     return false;
   }
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     io_uring_queue_exit(&ring);
   };
 

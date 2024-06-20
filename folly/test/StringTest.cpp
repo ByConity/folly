@@ -78,12 +78,12 @@ TEST(StringPrintf, Appending) {
 void vprintfCheck(const char* expected, const char* fmt, ...) {
   va_list apOrig;
   va_start(apOrig, fmt);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     va_end(apOrig);
   };
   va_list ap;
   va_copy(ap, apOrig);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     va_end(ap);
   };
 
@@ -109,7 +109,7 @@ void vprintfCheck(const char* expected, const char* fmt, ...) {
 void vprintfError(const char* fmt, ...) {
   va_list ap;
   va_start(ap, fmt);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     va_end(ap);
   };
 

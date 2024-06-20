@@ -52,7 +52,7 @@ std::shared_ptr<ElfFile> SignalSafeElfCache::getFile(StringPiece p) {
   sigset_t oldsigs;
   sigemptyset(&oldsigs);
   sigprocmask(SIG_SETMASK, &newsigs, &oldsigs);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     sigprocmask(SIG_SETMASK, &oldsigs, nullptr);
   };
 

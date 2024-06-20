@@ -1437,7 +1437,7 @@ TYPED_TEST_P(EventBaseTest, RunInThread) {
       [] { return TypeParam::getBackend(); }, numThreads, opsPerThread);
 
   std::deque<std::thread> threads;
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     // Wait on all of the threads.
     for (auto& thread : threads) {
       thread.join();
@@ -1542,7 +1542,7 @@ TYPED_TEST_P(EventBaseTest, RunImmediatelyOrRunInEventBaseThreadAndWaitCross) {
   auto evbPtr = this->makeEventBase();
   folly::EventBase& eb = *evbPtr;
   std::thread th(&EventBase::loopForever, &eb);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     eb.terminateLoopSoon();
     th.join();
   };
@@ -1555,7 +1555,7 @@ TYPED_TEST_P(EventBaseTest, RunImmediatelyOrRunInEventBaseThreadAndWaitWithin) {
   auto evbPtr = this->makeEventBase();
   folly::EventBase& eb = *evbPtr;
   std::thread th(&EventBase::loopForever, &eb);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     eb.terminateLoopSoon();
     th.join();
   };
@@ -1579,7 +1579,7 @@ TYPED_TEST_P(EventBaseTest, RunImmediatelyOrRunInEventBaseThreadCross) {
   auto evbPtr = this->makeEventBase();
   folly::EventBase& eb = *evbPtr;
   std::thread th(&EventBase::loopForever, &eb);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     eb.terminateLoopSoon();
     th.join();
   };

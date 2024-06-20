@@ -52,7 +52,7 @@ void throwCallback(
   if (handlingThrow) {
     return;
   }
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     handlingThrow = false;
   };
   handlingThrow = true;

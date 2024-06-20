@@ -186,7 +186,7 @@ void printHex(uint64_t val) {
 }
 
 void dumpTimeInfo() {
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     flush();
   };
   time_t now = time(nullptr);
@@ -350,7 +350,7 @@ const char* signal_reason(int signum, int si_code) {
 }
 
 void dumpSignalInfo(int signum, siginfo_t* siginfo) {
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     flush();
   };
   // Get the signal name, if possible.
@@ -467,7 +467,7 @@ void signalHandler(int signum, siginfo_t* info, void* uctx) {
   gFatalSignalReceived.store(true, std::memory_order_relaxed);
 
   int savedErrno = errno;
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     flush();
     errno = savedErrno;
   };

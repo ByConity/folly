@@ -24,6 +24,9 @@
 #include <typeindex>
 #include <unordered_set>
 #include <vector>
+#include <sys/types.h>
+#include <sys/syscall.h>
+#include <unistd.h>
 
 #include <folly/AtomicIntrusiveLinkedList.h>
 #include <folly/CPortability.h>

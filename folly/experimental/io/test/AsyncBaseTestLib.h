@@ -87,7 +87,7 @@ void testReadsSerially(
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -128,7 +128,7 @@ void testReadsParallel(
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -201,7 +201,7 @@ void testReadsQueued(
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
   for (size_t i = 0; i < specs.size(); i++) {
@@ -395,7 +395,7 @@ TYPED_TEST_P(AsyncTest, NonBlockingWait) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
   size_t size = 2 * test::async_base_test_lib_detail::kODirectAlign;
@@ -429,7 +429,7 @@ TYPED_TEST_P(AsyncTest, Cancel) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 
@@ -497,7 +497,7 @@ TYPED_TEST_P(AsyncBatchTest, BatchRead) {
   if (fd == -1)
     fd = ::open(tempFile.path().c_str(), O_RDONLY);
   SKIP_IF(fd == -1) << "Tempfile can't be opened: " << folly::errnoStr(errno);
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     ::close(fd);
   };
 

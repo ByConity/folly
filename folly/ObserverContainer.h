@@ -252,7 +252,7 @@ class ObserverContainerStore : public ObserverContainerStoreBase<Observer> {
         << "Nested iteration of ObserverContainer is prohibited.";
     iterating_ = true;
     maybeCurrentIterationPolicy_ = policy;
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       if (removalDuringIteration_) {
         // observers removed while we were iterating through container;
         // remove elements for which the element value is null

@@ -464,7 +464,7 @@ void AsyncServerSocket::bind(uint16_t port) {
         "bad getaddrinfo");
   }
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     freeaddrinfo(res0);
   };
 
@@ -642,7 +642,7 @@ void AsyncServerSocket::addAcceptCallback(
 
   callbacks_.emplace_back(callback, eventBase);
 
-  SCOPE_SUCCESS {
+  FOLLY_SCOPE_SUCCESS {
     // If this is the first accept callback and we are supposed to be accepting,
     // start accepting.
     if (runStartAccepting) {

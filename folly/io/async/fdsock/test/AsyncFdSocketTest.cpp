@@ -265,7 +265,7 @@ TEST_P(AsyncFdSocketSequenceRoundtripTest, WithDataSize) {
   // "ReadVec" path.
   test::ReadvCallback rcb(128, 3);
   // Avoid `readEOF` use-after-stack-scope in `~AsyncSocket`.
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     recvSock_->setReadCB(nullptr);
   };
   recvSock_->setReadCB(&rcb);

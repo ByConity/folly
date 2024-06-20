@@ -202,7 +202,7 @@ class EventHandlerOobTest : public ::testing::Test {
     clientThread = std::thread([serverPortFuture = serverReady.get_future(),
                                 clientOps]() mutable {
       int clientFd = socket(AF_INET, SOCK_STREAM, 0);
-      SCOPE_EXIT {
+      FOLLY_SCOPE_EXIT {
         close(clientFd);
       };
       struct hostent* he{nullptr};
@@ -234,7 +234,7 @@ class EventHandlerOobTest : public ::testing::Test {
   void acceptConn() {
     // make the server.
     int listenfd = socket(AF_INET, SOCK_STREAM, 0);
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       close(listenfd);
     };
     PCHECK(listenfd != -1) << "unable to open socket";

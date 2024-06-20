@@ -2872,7 +2872,7 @@ TEST(FiberManager, loopInUnwind) {
   });
 
   try {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       EXPECT_FALSE(started);
       evb.drive();
       EXPECT_TRUE(started);

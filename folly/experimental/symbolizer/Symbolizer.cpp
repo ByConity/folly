@@ -300,7 +300,7 @@ FastStackTracePrinter::FastStackTracePrinter(
 FastStackTracePrinter::~FastStackTracePrinter() = default;
 
 void FastStackTracePrinter::printStackTrace(bool symbolize) {
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     printer_->flush();
   };
 
@@ -401,7 +401,7 @@ void SafeStackTracePrinter::printUnsymbolizedStackTrace() {
 }
 
 void SafeStackTracePrinter::printStackTrace(bool symbolize) {
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     flush();
   };
 

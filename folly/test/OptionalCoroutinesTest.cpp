@@ -87,7 +87,7 @@ TEST(Optional, CoroutineException) {
 TEST(Optional, CoroutineCleanedUp) {
   int count_dest = 0;
   auto r = [&]() -> Optional<int> {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       ++count_dest;
     };
     auto x = co_await folly::Optional<int>();

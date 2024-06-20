@@ -222,7 +222,7 @@ void IOThreadPoolExecutor::threadRun(ThreadPtr thread) {
   if (threadIdCollector_) {
     threadIdCollector_->addTid(tid);
   }
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     if (threadIdCollector_) {
       threadIdCollector_->removeTid(tid);
     }

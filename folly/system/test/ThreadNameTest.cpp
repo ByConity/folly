@@ -40,7 +40,7 @@ TEST(ThreadName, getCurrentThreadName) {
       EXPECT_EQ(kThreadName.toString(), *getCurrentThreadName());
     }
   });
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     th.join();
   };
 }
@@ -55,11 +55,11 @@ TEST(ThreadName, setThreadNameOtherPthread) {
     handle_set.post();
     let_thread_end.wait();
   });
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     th.join();
   };
   handle_set.wait();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     let_thread_end.post();
   };
   EXPECT_EQ(
@@ -70,10 +70,10 @@ TEST(ThreadName, setThreadNameOtherPthread) {
 TEST(ThreadName, setThreadNameOtherId) {
   Baton<> let_thread_end;
   thread th([&] { let_thread_end.wait(); });
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     th.join();
   };
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     let_thread_end.post();
   };
   EXPECT_EQ(

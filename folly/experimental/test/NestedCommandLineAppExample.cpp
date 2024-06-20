@@ -66,7 +66,7 @@ class Concatenator {
 void Concatenator::cat(FILE* file) {
   char* lineBuf = nullptr;
   size_t lineBufSize = 0;
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     free(lineBuf);
   };
 

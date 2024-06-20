@@ -629,7 +629,7 @@ void CoreBase::doCallback(
     }
   } else {
     attached_.fetch_add(1, std::memory_order_relaxed);
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       context_ = {};
       callback_ = {};
       detachOne();

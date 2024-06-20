@@ -467,7 +467,7 @@ bool EventBase::isSuccess(LoopStatus status) {
 
 bool EventBase::loopBody(int flags, LoopOptions options) {
   loopMainSetup();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     DCHECK(!loopState_); // Cannot be suspended.
     loopMainCleanup();
   };
@@ -492,7 +492,7 @@ EventBase::LoopStatus EventBase::loopWithSuspension() {
   DCHECK_NE(evb_->getPollableFd(), -1)
       << "loopWithSuspension() is only supported for backends with pollable fd";
   loopMainSetup();
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     loopMainCleanup();
   };
   LoopOptions options;
@@ -537,7 +537,7 @@ EventBase::LoopStatus EventBase::loopMain(int flags, LoopOptions options) {
     resumed = true;
   }
 
-  SCOPE_EXIT {
+  FOLLY_SCOPE_EXIT {
     // Consume the stop signal so that the loop can resume on the next call.
     stop_.store(false, std::memory_order_relaxed);
   };
@@ -725,7 +725,7 @@ void EventBase::loopForever() {
   {
     // Make sure notification queue events are treated as normal events.
     loopKeepAliveCount_.fetch_add(1, std::memory_order_relaxed);
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       loopKeepAliveCount_.fetch_sub(1, std::memory_order_relaxed);
       applyLoopKeepAlive();
     };
@@ -875,7 +875,7 @@ void EventBase::runInEventBaseThreadAndWait(Func fn) noexcept {
 
   Baton<> ready;
   runInEventBaseThread([&ready, fn = std::move(fn)]() mutable {
-    SCOPE_EXIT {
+    FOLLY_SCOPE_EXIT {
       ready.post();
     };
     // A trick to force the stored functor to be executed and then destructed
