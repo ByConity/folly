@@ -18,9 +18,9 @@
 
 #include <folly/experimental/io/AsyncBase.h>
 
-#if __has_include(<folly/experimental/io/libaio.h>)
+#if __has_include(<libaio.h>)
 
-#include <folly/experimental/io/libaio.h>
+#include <libaio.h>
 
 namespace folly {
 

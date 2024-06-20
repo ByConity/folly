@@ -35,7 +35,7 @@
 #include <sys/eventfd.h>
 #endif
 
-#if __has_include(<folly/experimental/io/libaio.h>)
+#if __has_include(<libaio.h>)
 
 // debugging helpers
 namespace {
