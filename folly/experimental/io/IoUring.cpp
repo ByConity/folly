@@ -125,6 +125,11 @@ void IoUringOp::reset(NotificationCallback cb) {
 
 IoUringOp::~IoUringOp() {}
 
+void IoUringOp::init() {
+  ::memset(&getSqe(), 0, getSqeSize());
+  AsyncBaseOp::init();
+}
+
 void IoUringOp::pread(int fd, void* buf, size_t size, off_t start) {
   init();
   iov_[0].iov_base = buf;

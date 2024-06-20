@@ -104,6 +104,10 @@ class IoUringOp : public AsyncBaseOp {
 
   const Options& getOptions() const { return options_; }
 
+ protected:
+  
+  void init() override;
+
  private:
   Options options_;
 

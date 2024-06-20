@@ -136,7 +136,7 @@ class AsyncBaseOp {
   static std::string fd2name(int fd);
 
  protected:
-  void init();
+  virtual void init();
   void start();
   void unstart();
   void complete(ssize_t result);
