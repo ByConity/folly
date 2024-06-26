@@ -33,27 +33,27 @@
 #include <MSWSock.h> // @manual
 #endif
 
-#if !FOLLY_HAVE_RECVMMSG
-#if FOLLY_HAVE_WEAK_SYMBOLS
-extern "C" FOLLY_ATTR_WEAK int recvmmsg(
-    int sockfd,
-    struct mmsghdr* msgvec,
-    unsigned int vlen,
-#if defined(__EMSCRIPTEN__)
-    unsigned int flags,
-#else
-    int flags,
-#endif
-    struct timespec* timeout);
-#else
-static int (*recvmmsg)(
-    int sockfd,
-    struct mmsghdr* msgvec,
-    unsigned int vlen,
-    int flags,
-    struct timespec* timeout) = nullptr;
-#endif // FOLLY_HAVE_WEAK_SYMBOLS
-#endif // FOLLY_HAVE_RECVMMSG
+// #if !FOLLY_HAVE_RECVMMSG
+// #if FOLLY_HAVE_WEAK_SYMBOLS
+// extern "C" FOLLY_ATTR_WEAK int recvmmsg(
+//     int sockfd,
+//     struct mmsghdr* msgvec,
+//     unsigned int vlen,
+// #if defined(__EMSCRIPTEN__)
+//     unsigned int flags,
+// #else
+//     int flags,
+// #endif
+//     struct timespec* timeout);
+// #else
+// static int (*recvmmsg)(
+//     int sockfd,
+//     struct mmsghdr* msgvec,
+//     unsigned int vlen,
+//     int flags,
+//     struct timespec* timeout) = nullptr;
+// #endif // FOLLY_HAVE_WEAK_SYMBOLS
+// #endif // FOLLY_HAVE_RECVMMSG
 
 namespace folly {
 namespace netops {
@@ -408,9 +408,9 @@ int recvmmsg(
 #if defined(__EMSCRIPTEN__)
   throw std::logic_error("Not implemented!");
 #else
-  if (reinterpret_cast<void*>(::recvmmsg) != nullptr) {
-    return wrapSocketFunction<int>(::recvmmsg, s, msgvec, vlen, flags, timeout);
-  }
+  // if (reinterpret_cast<void*>(::recvmmsg) != nullptr) {
+  //   return wrapSocketFunction<int>(::recvmmsg, s, msgvec, vlen, flags, timeout);
+  // }
   // implement via recvmsg
   for (unsigned int i = 0; i < vlen; i++) {
     ssize_t ret = recvmsg(s, &msgvec[i].msg_hdr, flags);
